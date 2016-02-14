@@ -8,6 +8,27 @@ function setStatusBarText(what, docType){
     vscode.window.setStatusBarMessage(text, 1500);
 }
 
+function getOutputDir(quickPickLabel) {
+    var outputDir;
+    
+    switch (quickPickLabel) {
+        case 'pdf':
+            outputDir = vscode.workspace.getConfiguration('pandoc').get('pdfOutputDirString');
+            console.log('outputDirstring = ' + outputDir);
+            break;
+        case 'docx':
+            outputDir = vscode.workspace.getConfiguration('pandoc').get('docxOutputDirString');
+            console.log('outputDirstring = ' + outputDir);
+            break;
+        case 'html':
+            outputDir = vscode.workspace.getConfiguration('pandoc').get('htmlOutputDirString');
+            console.log('outputDirstring = ' + outputDir);
+            break;
+    }
+    
+    return outputDir;
+}
+
 function getPandocOptions(quickPickLabel) {
     var pandocOptions;
     
@@ -57,10 +78,17 @@ export function activate(context: vscode.ExtensionContext) {
             setStatusBarText('Generating', qpSelection.label);
             
             var pandocOptions = getPandocOptions(qpSelection.label);
+            var outputDir = getOutputDir(qpSelection.label);
+            if (outputDir.length > 0) {
+                var subPath = path.join(filePath, outputDir);
+                outFile = (path.join(subPath, fileNameOnly) + '.' + qpSelection.label).replace(/(^.*$)/gm,"\"" + "$1" + "\"");
             
             // debug
-            console.log('debug: outFile = ' + inFile);
-            console.log('debug: inFile = ' + outFile);
+            console.log('debug: inFile = ' + inFile);
+            if (outputDir.length > 0) {
+                console.log('debug: outputDir = ' + outputDir);                
+            }                            
+            console.log('debug: outFile = ' + outFile);
             console.log('debug: pandoc ' + inFile + ' -o ' + outFile + pandocOptions);
             
             var space = '\x20';            

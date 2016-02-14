@@ -47,7 +47,22 @@
             "type": "string",
             "default": "",
             "description": "pandoc .html output option template that you would like to use"
-          }
+          },
+         "pandoc.pdfOutputDirString": {
+           "type": "string",
+           "default": "",
+           "description": "pandoc .pdf output sub directory that you would like to use"
+          },
+          "pandoc.docxOutputDirString": {
+            "type": "string",
+            "default": "",
+            "description": "pandoc .docx output sub directory that you would like to use"
+          },
+          "pandoc.htmlOutputDirString": {
+            "type": "string",
+            "default": "",
+            "description": "pandoc .html output sub directory that you would like to use"
+          }          
        }
      },
      "keybindings": [
